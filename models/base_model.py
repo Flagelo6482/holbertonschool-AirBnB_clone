@@ -16,11 +16,12 @@ class BaseModel:
         """Initialization constructor"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = self.created_at
 
     def __str__(self):
         """Returns a user-readable string"""
-        return f"[{self.__class__.__name__}] ({self.id}) <{self.__dict__}>"
+        st_dic = vars(self)
+        return f"[{self.__class__.__name__}] ({self.id}) {st_dic}"
 
     def save(self):
         """
