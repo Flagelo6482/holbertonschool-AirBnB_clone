@@ -28,3 +28,14 @@ class BaseModel:
         attribute with the current date and time
         """
         self.updated_at = datetime.datetime.now()
+
+    def to_dict(self):
+        """
+        Return a dictionary with the set values
+        """
+        dic = self.__dict__.copy()
+        dic['__class__'] = self.__class__.__name__
+        dic['created_at'] = self.created_at.isoformat()
+        dic['updated_at'] = self.updated_at.isoformat()
+        dic['id'] = self.id
+        return dic
