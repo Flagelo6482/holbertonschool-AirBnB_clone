@@ -12,23 +12,19 @@ class BaseModel:
     Class that defines all common methods/attributes
     for other classes
     """
-    id = str()
-    created_at = 0
-    updated_at = 0
-
     def __init__(self):
         """Initialization constructor"""
-        id = str(uuid.uuid4())
-        created_at = datetime.now()
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.datetime.now()
+        self.updated_at = self.created_at
 
     def __str__(self):
-        """Print a string readable to a user"""
+        """Returns a user-readable string"""
         return f"[{self.__class__.__name__}] ({self.id}) <{self.__dict__}>"
 
     def save(self):
-        """Update the date and time"""
-        updated_at = datetime.now()
-
-    def to_dict(self):
-        """Returns the dictionary of the object"""
-        return f"{self.__dict__}"
+        """
+        Updates the updated_at public instance
+        attribute with the current date and time
+        """
+        self.updated_at = datetime.datetime.now()
