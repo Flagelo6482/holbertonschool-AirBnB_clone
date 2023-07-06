@@ -3,7 +3,7 @@
 
 """BaseModel"""
 
-import datetime
+import datetime as dt
 import uuid
 
 
@@ -12,11 +12,20 @@ class BaseModel:
     Class that defines all common methods/attributes
     for other classes
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialization constructor"""
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
+        self.created_at = dt.datetime.now()
         self.updated_at = self.created_at
+
+        if kwargs:
+            class_name = kwargs.pop('__class__', None)
+            if class_name:
+                date = "%Y-%m-%dT%H:%M:%S.%f"
+                for key, value in kwargs.items():
+                    if key in ['created_at', 'updated_at']:
+                        value = dt.datetime.strptime(value, date)
+                    setattr(self, key, value)
 
     def __str__(self):
         """Returns a user-readable string"""
