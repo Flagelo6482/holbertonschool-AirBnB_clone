@@ -26,5 +26,5 @@ class FileStorage:
     def reload(self):
         des_j = {}
         if self.__file_path:
-            with open(self.__file_path, mode="r") as file:
+            with open(self.__file_path, mode="w") as file:
                 des_j = json.loads(file)
