@@ -20,12 +20,22 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
+        serialized = {}
+        for k, obj in self.__objects.items():
+            serialized[k] = obj.to_dict()
+
         with open(self.__file_path, mode="w") as file:
-            file.write(json.dumps(self.__objects))
+            json.dump(serialized, file)
 
     def reload(self):
-        des_j = {}
-        if self.__file_path:
-            with open(self.__file_path, mode="r") as file:
-                des_son = json.loads(file)
-                des_j.append(des_son)
+        try:
+            with open(self.__file_path, "r") as file:
+                serialized_objects = json.load(file)
+                for key, obj_dict in serialized_objects.items():
+                    class_name, obj_id = key.split(".")
+                    module = __import__("models." + class_name, fromlist=[class_name])
+                    cls = getattr(module, class_name)
+                    obj = cls(**obj_dict)
+                    self.__objects[key] = obj
+        except FileNotFoundError:
+            pass
