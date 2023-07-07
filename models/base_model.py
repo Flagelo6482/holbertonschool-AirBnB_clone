@@ -3,7 +3,7 @@
 
 """BaseModel"""
 
-from models import storage
+import models
 import datetime as dt
 import uuid
 
