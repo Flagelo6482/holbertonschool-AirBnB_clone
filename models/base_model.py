@@ -28,7 +28,7 @@ class BaseModel:
                         value = dt.datetime.strptime(value, date)
                     setattr(self, key, value)
         if not kwargs:
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """Returns a user-readable string"""
@@ -41,7 +41,7 @@ class BaseModel:
         attribute with the current date and time
         """
         self.updated_at = datetime.datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """
