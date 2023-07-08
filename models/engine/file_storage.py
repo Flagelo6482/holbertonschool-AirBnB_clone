@@ -5,6 +5,7 @@
 
 
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -13,29 +14,27 @@ class FileStorage:
     __objects = {}
 
     def all(self):
+        """Return the diccionario __objectcs"""
         return self.__objects
 
     def new(self, obj):
+        """Sets in __objects the obj"""
         key = f"{obj.__class__.__name__}.{obj.id}"
         self.__objects[key] = obj
 
     def save(self):
-        serialized = {}
-        for k, obj in self.__objects.items():
-            serialized[k] = obj.to_dict()
-
+        """Serializes __objects to the JSON file"""
+        dic = {}
         with open(self.__file_path, mode="w") as file:
-            json.dump(serialized, file)
+            for k, v in self.__objects.items():
+                dic[k] = v.to_dict()
+            file.write(json.dumps(dic))
 
     def reload(self):
+        """Deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, "r") as file:
-                serialized_objects = json.load(file)
-                for key, obj_dict in serialized_objects.items():
-                    class_name, obj_id = key.split(".")
-                    module = __import__("models." + class_name, fromlist=[class_name])
-                    cls = getattr(module, class_name)
-                    obj = cls(**obj_dict)
-                    self.__objects[key] = obj
+            with open(self.__file_path, mode="r") as file:
+                dic = json.loads(file.read())
+            self.__objects = dic
         except FileNotFoundError:
             pass
