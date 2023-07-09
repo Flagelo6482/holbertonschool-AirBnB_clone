@@ -32,9 +32,13 @@ class FileStorage:
 
     def reload(self):
         """Deserializes the JSON file to __objects"""
+        cls = "BaseModel"
         try:
             with open(self.__file_path, mode="r") as file:
                 dic = json.loads(file.read())
-            self.__objects = dic
+            for k in dic.keys():
+                val = dic[k]
+                if val['__class__'] in cls:
+                    self.__objects[k] = eval(val['__class__'])(**val)
         except FileNotFoundError:
             pass
