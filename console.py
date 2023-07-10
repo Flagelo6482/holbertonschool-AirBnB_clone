@@ -86,20 +86,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do__all(self, arg):
         """Comentario"""
-        lis = []
-
-        if arg == "":
-            print([str[v] for k, v in storage.all().items()])
-        else:
-            args = arg.split(" ")
-            if args[0] not in class_home:
-                print("** class doesn't exist **")
-            else:
-                for k, v in storage.all().items():
-                    cls = k.split(".")
-                    if cls[0] == args[0]:
-                        lis.append(str(v))
+        if not arg:
+            all_obj = storage.all()
+            lis = []
+            for o_id in all_obj.keys():
+                obj = all_obj[o_id]
+                lis.append(str(obj))
+            print(lis)
+        elif arg in self.cls:
+            all_objs = storage.all()
+            list = []
+            for o_id in all_objs.keys():
+                obj = all_objs[o_id]
+                if arg == obj.__class__.__name__:
+                    lis.append(str(obj))
+            if len(lis) > 0:
                 print(lis)
+            else:
+                print("** class doesn't exist **")
+        else:
+            print("** class doesn't exist **")
 
     def do_update(self, arg):
         """Comentario"""
