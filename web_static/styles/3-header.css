@@ -1,0 +1,10 @@
+header {
+    background: white;
+    height: 90px;
+    width: 100%;
+    border-bottom: 1px solid #CCCCCC;
+    background-image: url("../images/hbn.png");
+    background-position: 20px center;
+    background-size: auto 70%;
+    background-repeat: no-repeat;
+}
