@@ -5,17 +5,16 @@
 
 
 import cmd
+import json
 from models.base_model import BaseModel
 from models import storage
 
-class_home = {
-    "BaseModel": BaseModel
-}
-
 
 class HBNBCommand(cmd.Cmd):
-
+    """Command Interpreter"""
     prompt = '(hbnb) '
+    cls = ["BaseModel"]
+    file = None
 
     def do_quit(self, arg):
         """By entering quit, we exit the loop"""
@@ -35,16 +34,12 @@ class HBNBCommand(cmd.Cmd):
         """Comentario"""
         if not arg:
             print("** class name missing **")
-            return
-        clases = {"BaseModel": BaseModel}
-        class_name = arg.split()[0]
-
-        if class_name not in clases:
+        elif arg in self.cls:
+            new = eval(arg)()
+            eval(arg).save(new)
+            print(new.id)
+        else:
             print("** class doesn't exist **")
-            return
-        new_instance = clases[class_name]()
-        new_instance.save()
-        print(new_instance.id)
 
     def do_show(self, arg):
         """Comentario"""
@@ -52,52 +47,57 @@ class HBNBCommand(cmd.Cmd):
 
         if not arg:
             print("** class name missing **")
-            return
-        elif args[0] not in class_home:
-            print("** class doesn't exist **")
-            return
-        elif len(args) < 2:
-            print("** instance id missing **")
-            return
         else:
-            v_str = f"{args[0]}.{args[1]}"
-            if v_str not in storage.all():
-                print("** no instance found **")
-            else:
-                print(storage.all()[v_str])
+            args = splt_args(arg)
+            if args[0] not int self.cls:
+                print("** class doesn't exist **")
+            elif len(args) == 1:
+                print("** instance id missing **")
+            elif args[1]:
+                all_objs = storage.all()
+                for k in all_objs.keys():
+                    var = all_objs[key]
+                    if var.id == args[1] and var.__class__.__name__ == args[0]:
+                        print(var)
+                        break
+                else:
+                    print("** no instance found **")
 
     def do_destroy(self, arg):
         """Comentario"""
-        args = arg.split()
-
-        if len(args) < 1:
+        if not arg:
             print("** class name missing **")
-        elif args[0] not in class_home:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
         else:
-            v_str = f"{args[0]}.{args[1]}"
-            if v_str not in storage.all().keys():
-                print("** no instance found **")
+            args = splt_args(arg)
+            if args[0] not in self.cls:
+                print("** class doesn't exist **")
+            elif len(args) == 1:
+                print("** instance id missing **")
             else:
-                storage.all().pop(v_str)
-                storage.save()
+                all_objs = storage.all()
+                for key in all_objs.keys():
+                    var = all_objs[key]
+                    if var.id == args[1] and var.__class__.__name__ == args[0]:
+                        del all_objs[key]
+                        storage.save()
+                        break
+                else:
+                    print("** no instance found **")
 
-    def do__all(self, arg):
+    def do_all(self, arg):
         """Comentario"""
         if not arg:
-            all_obj = storage.all()
+            all_objs = storage.all()
             lis = []
-            for o_id in all_obj.keys():
-                obj = all_obj[o_id]
+            for obj_id in all_objs.keys():
+                obj = all_objs[obj_id]
                 lis.append(str(obj))
             print(lis)
         elif arg in self.cls:
             all_objs = storage.all()
-            list = []
-            for o_id in all_objs.keys():
-                obj = all_objs[o_id]
+            lis = []
+            for obj_id in all_objs.keys():
+                obj = all_objs[obj_id]
                 if arg == obj.__class__.__name__:
                     lis.append(str(obj))
             if len(lis) > 0:
@@ -107,45 +107,63 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def complete(self, text, state):
+        """Comentario"""
+        if state == 0:
+            import readline
+            line_or = readline.get_line_buffer()
+            line = origline.lstrip()
+            ppd = len(line_or) - len(line)
+            g_dx = readline.get_begidx() - stripped
+            d_dx = readline.get_endidx() - stripped
+
+            if g_dx > 0:
+                cdm, args, foo = self.parseline(line)
+                if cmd == '':
+                    func = self.completedefault
+                else:
+                    try:
+                        func = getattr(self, 'complete_' + cmd)
+                    except AttributeError:
+                        func = self.completedefault
+            else:
+                func = self.completenames
+            self.completion_matches = func(text, line, g_dx, d_dx)
+        try:
+            return self.completion_matches[state]
+        except IndexError:
+            return None
+
     def do_update(self, arg):
         """Comentario"""
-        args = arg.split()
-
-        if len(args) < 1:
+        if not arg:
             print("** class name missing **")
-            return
-        elif args[0] not in class_home:
-            print("** class doesn't exist **")
-            return
-        elif len(args) < 2:
-            print("** instance id missing **")
-            return
         else:
-            v_str = f"{args[0]}.{args[1]}"
-            if v_str not in storage.all().keys():
-                print("** no instance found **")
-                return
-            elif len(args) < 3:
-                print("** atribute name missing **")
-                return
-            elif len(args) < 4:
+            args = splt_args(arg)
+            if args[0] not in self.cls:
+                print("** class doesn't exist **")
+            elif len(args) == 1:
+                print("** instance id missing **")
+            elif len(args) == 2:
+                print("** attribute name missing **")
+            elif len(args) == 3:
                 print("** value missing **")
-                return
             else:
-                setattr(storage.all()[v_str], args[2], args[3])
-                storage.save()
+                all_objs = storage.all()
+                for k in all_objs.keys():
+                    var = all_objs[k]
+                    if var.id == args[1] and var.__class__.__name__ == args[0]:
+                        setattr(var, args[2], args[3].strip('"'))
+                        break
+                else:
+                    print("** no instance found **")
 
-    def do_count(self, arg):
+
+
+    def splt_args(arg):
         """Comentario"""
-        cls = globals().get(arg, None)
-        if cls is None:
-            print("** class doesn't exist **")
-            return
-        count = 0
-        for x in storage.all().values():
-            if x.__class__.__name__ == arg:
-                count += 1
-        print(count)
+        arg = arg.split()
+        return arg
 
 
 if __name__ == '__main__':
