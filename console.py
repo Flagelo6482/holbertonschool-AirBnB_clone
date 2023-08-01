@@ -158,8 +158,6 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** no instance found **")
 
-
-
     def splt_args(arg):
         """Comentario"""
         arg = arg.split()
