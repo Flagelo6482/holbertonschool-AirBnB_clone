@@ -49,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             args = splt_args(arg)
-            if args[0] not int self.cls:
+            if args[0] not in self.cls:
                 print("** class doesn't exist **")
             elif len(args) == 1:
                 print("** instance id missing **")
