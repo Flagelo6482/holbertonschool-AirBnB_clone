@@ -29,6 +29,32 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_show(sefl, arg):
+        """Prints the string representation of an instance based on the class
+           name and id. Ex: $ show BaseModel 1234-1234-1234"""
+        if not arg:
+            print("** class doesn't exist **")
+        else:
+            args = splt(arg)
+            if args[0] not in self.cls:
+                print("** class doesn't exist **")
+            elif len(args) == 1:
+                print("** instance id missing **")
+            elif args[1]:
+                objs = storage.all()
+                for k in objs.keys():
+                    var = objs[k]
+                    if var.id == args[1] and o.__class__.__name__ == args[0]:
+                        print(var)
+                        break
+                else:
+                    print("** no instance found **")
+
+    def splt(arg):
+        """separate string read"""
+        args = arg.split()
+        return args
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
