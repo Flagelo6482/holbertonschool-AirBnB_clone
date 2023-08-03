@@ -17,6 +17,11 @@ class HBNBCommand(cmd.Cmd):
     cls = ["BaseModel", "User", "State"]
     file = None
 
+    def separarArgs(arg):
+        """separamos la linea leida en string separados"""
+        argumentos = arg.split()
+        return argumentos
+
     def do_create(self, arg):
         """Creates a new instance of "BaseModel", saves it
            (in the JSON file) and prints the id."""
@@ -49,11 +54,6 @@ class HBNBCommand(cmd.Cmd):
                         break
                 else:
                     print("** no instance found **")
-
-    def separarArgs(arg):
-        """separamos la linea leida en string separados"""
-        argumentos = arg.split()
-        return argumentos
 
 
 if __name__ == '__main__':
