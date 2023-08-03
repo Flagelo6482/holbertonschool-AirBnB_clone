@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class doesn't exist **")
         else:
-            args = self.split(arg)
+            args = separarArgs(arg)
             if args[0] not in self.cls:
                 print("** class doesn't exist **")
             elif len(args) == 1:
@@ -50,10 +50,10 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** no instance found **")
 
-    def split(self, arg):
-        """separate string read"""
-        args = arg.split()
-        return args
+    def separarArgs(arg):
+        """separamos la linea leida en string separados"""
+        argumentos = arg.split()
+        return argumentos
 
 
 if __name__ == '__main__':
