@@ -1,6 +1,7 @@
 """
-Unittest
+Unittest for class base
 """
+
 
 import unittest
 import datetime
@@ -9,7 +10,8 @@ from models.base_model import BaseModel
 
 
 class Test_BaseModel(unittest.TestCase):
-    """Evidence"""
+    """Test for this class"""
+
     def test_BaseModel(self):
         b1 = BaseModel()
         b1_dict = b1.to_dict()
