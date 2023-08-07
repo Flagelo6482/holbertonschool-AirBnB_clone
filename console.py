@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
             stripped = len(origline) - len(line)
             begidx = readline.get_begidx() - stripped
             endidx = readline.get_endidx() - stripped
-            if begidx>0:
+            if begidx > 0:
                 cmd, args, foo = self.parseline(line)
                 if cmd == '':
                     compfunc = self.completedefault
@@ -166,10 +166,10 @@ class HBNBCommand(cmd.Cmd):
         except IndexError:
             return None
 
-def separarArgs(arg):
-    """separamos la linea leida en string separados"""
-    argumentos = arg.split()
-    return argumentos
+    def separarArgs(arg):
+        """separamos la linea leida en string separados"""
+        argumentos = arg.split()
+        return argumentos
 
 
 if __name__ == '__main__':
