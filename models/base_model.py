@@ -3,7 +3,7 @@
 
 """BaseModel"""
 
-import datetime as dt
+import datetime
 import uuid
 import models
 
