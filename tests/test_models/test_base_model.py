@@ -11,33 +11,33 @@ from models.base_model import BaseModel
 class Test_BaseModel(unittest.TestCase):
     """Evidence"""
     def test_BaseModel(self):
-        b_1 = BaseModel()
-        b_1_dict = b_1.to_dict()
-        b_2 = BaseModel(**b_1_dict)
-        self.assertAlmostEqual(type(b_1_dict['updated_at']), str)
-        self.assertTrue('__class__' in b_1_dict)
-        self.assertAlmostEqual(type(b_1.created_at), datetime.datetime)
-        self.assertAlmostEqual(type(b_1.updated_at), datetime.datetime)
-        self.assertEqual(b_1.id, b_2.id)
-        self.assertEqual(b_1.created_at, b_2.created_at)
-        self.assertEqual(b_1.updated_at, b_2.updated_at)
+        b1 = BaseModel()
+        b1_dict = b1.to_dict()
+        b2 = BaseModel(**b1_dict)
+        self.assertAlmostEqual(type(b1_dict['updated_at']), str)
+        self.assertTrue('__class__' in b1_dict)
+        self.assertAlmostEqual(type(b1.created_at), datetime.datetime)
+        self.assertAlmostEqual(type(b1.updated_at), datetime.datetime)
+        self.assertEqual(b1.id, b2.id)
+        self.assertEqual(b1.created_at, b2.created_at)
+        self.assertEqual(b1.updated_at, b2.updated_at)
         self.assertNotIn('__class__', b2.__dict__)
 
     def test_str(self):
-        b_2 = BaseModel()
-        self.assertAlmostEqual(type(b_2.__str__()), str)
+        b2 = BaseModel()
+        self.assertAlmostEqual(type(b2.__str__()), str)
 
     def test_save(self):
-        b_3 = BaseModel()
-        bak = b_3.updated_at
-        b_3.save()
-        self.assertNotEqual(bak, b_3.updated_at)
+        b3 = BaseModel()
+        b_up = b3.updated_at
+        b3.save()
+        self.assertNotEqual(b_up, b3.updated_at)
         self.assertAlmostEqual(os.path.exists('file.json'), True)
 
     def test_to_dict(self):
-        b_4 = BaseModel()
-        b_4_dict = b_4.to_dict()
-        self.assertTrue('__class__' in b_4_dict)
-        self.assertAlmostEqual(type(b_4_dict['id']), str)
-        self.assertAlmostEqual(type(b_4_dict['created_at']), str)
-        self.assertAlmostEqual(type(b_4_dict['updated_at']), str)
+        b4 = BaseModel()
+        b4_dict = b4.to_dict()
+        self.assertTrue('__class__' in b4_dict)
+        self.assertAlmostEqual(type(b4_dict['id']), str)
+        self.assertAlmostEqual(type(b4_dict['updated_at']), str)
+        self.assertAlmostEqual(type(b4_dict['created_at']), str)
