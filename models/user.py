@@ -8,7 +8,7 @@ from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """Comentario"""
+    """This class has public class attributes"""
     email = ""
     password = ""
     first_name = ""
